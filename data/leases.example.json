@@ -1,0 +1,35 @@
+{
+  "leases": [
+    {
+      "mac_address": "00:11:22:33:44:55",
+      "tenant_name": "Juan Dela Cruz",
+      "phone_number": "09171234567",
+      "pin_code": "1234",
+      "status": "ACTIVE",
+      "paid_reference": "1002847192847",
+      "amount_paid": 200,
+      "activated_at": "2026-11-23T00:00:00.0000000Z",
+      "expires_at": "2026-12-23T00:00:00.0000000Z",
+      "emergency_passes_today": 0,
+      "last_emergency_pass_at": null,
+      "pin_swaps_this_month": 0,
+      "recovery_requested": false,
+      "updated_at": "2026-11-23T00:00:00.0000000Z"
+    }
+  ],
+  "payment_logs": [
+    {
+      "id": 1,
+      "mac_address": "00:11:22:33:44:55",
+      "tenant_name": "Juan Dela Cruz",
+      "phone_number": "09171234567",
+      "payment_type": "GCASH",
+      "paid_reference": "1002847192847",
+      "amount": 200,
+      "status": "APPROVED",
+      "submitted_at": "2026-11-23T00:00:00.0000000Z",
+      "approved_at": "2026-11-23T00:00:00.0000000Z"
+    }
+  ],
+  "admin_pin": "1234"
+}

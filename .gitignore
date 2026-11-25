@@ -1,0 +1,13 @@
+# OS & Editor
+*.tmp
+*.log
+.vs/
+.vscode/
+
+# Sensitive runtime tenant database & live assets
+data/leases.json
+web/images/gcash_qr_live.png
+
+# Local design mockups & heavy asset sandbox
+history/
+archive/

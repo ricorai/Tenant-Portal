@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tres Rentals • Tenant Wi-Fi Portal</title>
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+  <div class="portal-container">
+    <!-- TOP HEADER -->
+    <header class="portal-header">
+      <div class="brand-row">
+        <div class="wifi-icon-wrapper">
+          <svg id="wifi-icon" class="wifi-svg red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path class="wifi-bar-4" d="M1.42 9a16 16 0 0 1 21.16 0"/>
+            <path class="wifi-bar-3" d="M5 12.55a11 11 0 0 1 14.08 0"/>
+            <path class="wifi-bar-2" d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+            <circle class="wifi-bar-1" cx="12" cy="20" r="1.5" stroke="none" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="brand-text">Tres Rentals</span>
+        <span class="tag-tagum">Tagum</span>
+      </div>
+      <div class="title-row">
+        <h1 id="page-title" class="main-title">Tenant Wi-Fi</h1>
+        <div id="status-badge" class="status-badge-pill">
+          <span id="status-dot" class="status-dot"></span>
+          <span id="status-text">No Internet Access</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- SCREEN 1: TENANT DETAILS (Name + 09XXXXXXXXX) -->
+    <main id="view-details" style="display: none; flex-direction: column; gap: 12px;">
+      <section class="bento-card">
+        <div class="card-top-row">
+          <h2 class="card-heading">1. Your Details</h2>
+          <span class="rate-badge">₱200 / Month</span>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="input-name">Full Name</label>
+          <input id="input-name" type="text" class="text-input-box" placeholder="e.g. Juan Dela Cruz" autocomplete="name">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="input-phone">Mobile Number (for PIN recovery)</label>
+          <input id="input-phone" type="tel" inputmode="numeric" class="text-input-box" placeholder="09XXXXXXXXX" maxlength="13">
+          <span id="details-error" class="field-error">Enter your name and an 11-digit 09XXXXXXXXX number.</span>
+        </div>
+        <button id="btn-to-payment" type="button" class="btn-submit-black">Continue to Payment →</button>
+      </section>
+
+      <section class="bento-card soft-card">
+        <div class="card-top-row">
+          <h2 class="card-heading">Already Paid or New Phone?</h2>
+          <span class="rate-badge">PIN Login</span>
+        </div>
+        <p class="emergency-sub">Enter your active 4-digit PIN or recover a lost PIN using your mobile number.</p>
+        <button id="btn-go-pin" type="button" class="btn-outline-pill">Enter 4-Digit PIN →</button>
+      </section>
+    </main>
+
+    <!-- SCREEN 2: PAYWALL (10-Min 1 Mbps Pass + GCash QR + Ref #) -->
+    <main id="view-paywall" style="display: none; flex-direction: column; gap: 12px;">
+      <div class="nav-context-row">
+        <button id="btn-back-details" type="button" class="back-pill-btn">← Back</button>
+        <span id="tenant-chip" class="tenant-chip">Guest • 09XXXXXXXXX</span>
+      </div>
+
+      <section id="pending-notice" class="bento-card pending-card" style="display: none;">
+        <div class="card-top-row">
+          <h2 class="card-heading" style="color: var(--c-amber);">⏳ Payment Submitted</h2>
+          <span class="rate-badge">Pending Approval</span>
+        </div>
+        <p class="emergency-sub">Ref: <strong id="pending-ref-display"></strong> • Property Admin will approve shortly.</p>
+      </section>
+
+      <section id="emergency-card" class="bento-card soft-card">
+        <div class="emergency-top">
+          <svg class="icon-svg-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div>
+            <div class="emergency-title">Need internet to open GCash? Get 10-Min Pass</div>
+            <div id="emergency-subtext" class="emergency-sub">1 Mbps • 1 free pass daily per device</div>
+          </div>
+        </div>
+        <button id="btn-emergency" type="button" class="btn-emergency-pill">Activate 10-Min Pass</button>
+        <div id="emergency-timer-banner" class="emergency-timer-banner">
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase;">⚡ 10-Min Pass Active (1 Mbps)</div>
+          <div id="timer-digits" class="timer-digits">10:00</div>
+          <div class="emergency-sub">Pay via GCash below to unlock full 30-day access.</div>
+        </div>
+      </section>
+
+      <section class="bento-card gcash-card">
+        <div class="card-top-row">
+          <h2 class="card-heading">2. Pay ₱200 via GCash</h2>
+          <span class="rate-badge dark">Instant Activation</span>
+        </div>
+        <div class="qr-box-container">
+          <img id="gcash-qr-img" class="qr-img" src="images/gcash_qr.png" alt="Tres Rentals GCash QR">
+        </div>
+        <div class="account-line"><span id="gcash-num-display">09XX-XXX-XXXX</span> • <strong>JU** DE*A C***</strong></div>
+        <div class="actions-3-row">
+          <button id="btn-save-qr" type="button" class="btn-action-pill">Save QR</button>
+          <button id="btn-copy-num" type="button" class="btn-action-pill">Copy Number</button>
+          <button id="btn-open-gcash" type="button" class="btn-action-pill dark-action">Open GCash</button>
+        </div>
+      </section>
+
+      <section class="bento-card">
+        <div class="card-top-row"><h2 class="card-heading">3. Verify & Connect</h2></div>
+        <input id="ref-input-field" type="text" class="text-input-box" placeholder="13-Digit GCash Reference # (Optional)" maxlength="13">
+        <button id="btn-main-submit" type="button" class="btn-submit-black">Submit & Connect</button>
+      </section>
+
+      <div class="footer-link-wrapper">
+        <button id="btn-paywall-to-pin" type="button" class="footer-relink-btn">Already paid? Reconnect with 4-Digit PIN</button>
+      </div>
+    </main>
+
+    <!-- SCREEN 3: LOGIN PIN & RECOVERY -->
+    <main id="view-pin" style="display: none; flex-direction: column; gap: 12px;">
+      <section class="bento-card">
+        <div class="card-top-row">
+          <h2 class="card-heading">Enter 4-Digit Subscription PIN</h2>
+          <span class="rate-badge">Existing Tenants</span>
+        </div>
+        <div class="pin-input-grid">
+          <input type="text" inputmode="numeric" maxlength="1" class="pin-digit-box" data-idx="0">
+          <input type="text" inputmode="numeric" maxlength="1" class="pin-digit-box" data-idx="1">
+          <input type="text" inputmode="numeric" maxlength="1" class="pin-digit-box" data-idx="2">
+          <input type="text" inputmode="numeric" maxlength="1" class="pin-digit-box" data-idx="3">
+        </div>
+        <p class="pin-hint-sub">Use the 4-digit PIN given when you subscribed</p>
+        <button id="btn-pin-login" type="button" class="btn-submit-black">Connect to Wi-Fi</button>
+        <button id="btn-toggle-recovery" type="button" class="forgot-link-btn">Forgot PIN? Recover with Mobile Number</button>
+        <div id="recovery-drawer" class="recovery-drawer">
+          <label class="field-label" for="recover-phone">Registered Mobile Number</label>
+          <input id="recover-phone" type="tel" inputmode="numeric" class="text-input-box" placeholder="09XXXXXXXXX" maxlength="13">
+          <button id="btn-request-recovery" type="button" class="btn-outline-pill">Request PIN Recovery</button>
+          <span id="recovery-msg" class="emergency-sub" style="display:none; font-weight: 600;"></span>
+        </div>
+      </section>
+
+      <section class="bento-card soft-card">
+        <div class="card-top-row">
+          <h2 class="card-heading">New Tenant or Expired?</h2>
+          <span class="rate-badge">₱200 / Month</span>
+        </div>
+        <p class="emergency-sub">Enter your details first to pay via GCash or use the 10-Min Free Pass (1 Mbps).</p>
+        <button id="btn-pin-to-details" type="button" class="btn-outline-pill">Register & Pay via GCash →</button>
+      </section>
+    </main>
+
+    <!-- SCREEN 4: ACTIVE DASHBOARD -->
+    <main id="view-dashboard" style="display: none; flex-direction: column; gap: 12px;">
+      <section class="bento-card">
+        <div class="card-top-row">
+          <div class="card-heading-group">
+            <div class="check-icon-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <h2 class="card-heading">30-Day Subscription</h2>
+          </div>
+          <span id="dash-tenant-badge" class="rate-badge black">Active Tenant</span>
+        </div>
+        <div class="countdown-box">
+          <span class="countdown-label">TIME REMAINING</span>
+          <div id="countdown-display" class="countdown-timer-value">--d --h --m --s</div>
+          <span id="countdown-expiry" class="emergency-sub">Active subscription • Renew after 30 days</span>
+        </div>
+        <div class="recovery-pin-capsule">
+          <div>
+            <span class="pin-title">Your Subscription PIN</span>
+            <span class="pin-sub">Save or screenshot to reconnect anytime</span>
+          </div>
+          <button id="btn-copy-pin" type="button" class="btn-pin-black-capsule" title="Tap to copy">
+            <span id="recovery-pin-display" class="pin-digits-text">----</span>
+            <svg class="copy-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="bento-card">
+        <div class="card-top-row">
+          <h2 class="card-heading">Network Health</h2>
+          <span class="rate-badge">CAKE SQM Enabled</span>
+        </div>
+        <div class="metrics-3-grid">
+          <div class="metric-tile"><span class="metric-label">Download</span><span class="metric-val">30 Mbps</span></div>
+          <div class="metric-tile"><span class="metric-label">Upload</span><span class="metric-val">15 Mbps</span></div>
+          <div class="metric-tile"><span class="metric-label">Bufferbloat</span><span class="metric-val">A+ (8ms)</span></div>
+        </div>
+        <button id="btn-diagnostics" type="button" class="btn-outline-pill">Run Network Diagnostics →</button>
+      </section>
+    </main>
+
+    <div class="footer-link-wrapper">
+      Tres Rentals Wi-Fi • <a href="admin.html" style="color: inherit;">Admin</a>
+    </div>
+  </div>
+
+  <div id="success-modal" class="blur-success-modal">
+    <div class="check-outer-ring"><svg class="check-svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div id="success-title" class="success-label">Verified!</div>
+    <div id="success-desc" class="success-desc">Opening your dashboard...</div>
+  </div>
+  <div id="toast-pill" class="toast-pill"></div>
+
+  <script src="js/portal.js"></script>
+</body>
+</html>
